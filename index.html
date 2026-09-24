@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>TRIPNOTEC — CODE / BUILD / LAUNCH / PARTY</title>
-<meta name="description" content="TRIPNOTEC is a recurring three-day techno experience: Pre, Party and After, every month.">
+<title>IPNOTEC — CODE / BUILD / LAUNCH / PARTY</title>
+<meta name="description" content="IPNOTEC is a recurring three-day techno experience: Pre, Party and After, every month.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -903,7 +903,7 @@ body::before{
     <div class="org-hero-inner">
       <span class="kicker">THE PEOPLE BEHIND THE FREQUENCY</span>
       <h1>BUILD<br><span>THE CYCLE.</span></h1>
-      <p>TRIPNOTEC is assembling a repeatable network of serious spaces, techno artists, technical operators, creators, vendors, brands and specialists.</p>
+      <p>IPNOTEC is assembling a repeatable network of serious spaces, techno artists, technical operators, creators, vendors, brands and specialists.</p>
     </div>
   </div>
   <div class="section-wrap">
@@ -928,7 +928,7 @@ body::before{
   <div class="section-wrap">
     <div class="section-head">
       <div class="section-head-text">
-        <span class="kicker">YOUR TRIPNOTEC</span>
+        <span class="kicker">YOUR IPNOTEC</span>
         <h2 id="accountTitle">ACCOUNT.</h2>
       </div>
       <button class="btn-console" id="accountAuth">SIGN IN</button>
@@ -949,7 +949,7 @@ body::before{
 </main>
 
 <footer class="footer">
-  <span class="footer-brand">TRIPNOTEC</span>
+  <span class="footer-brand">IPNOTEC</span>
   <span id="footerTechnoText">TECHNO LOVES YOU</span>
   <div class="footer-leds">
     <span class="footer-led c"><span class="dot"></span>12 TEAMS</span>
@@ -1105,16 +1105,16 @@ const categories=[
 
 let selected=events[0],selectedCat='space',selectedCity=null,buyStep=1,pendingAuth=null;
 const state={
-  profile:JSON.parse(localStorage.getItem('tripnotec_profile')||'null'),
-  tickets:JSON.parse(localStorage.getItem('tripnotec_tickets')||'[]'),
-  applications:JSON.parse(localStorage.getItem('tripnotec_apps')||'[]')
+  profile:JSON.parse(localStorage.getItem('ipnotec_profile')||'null'),
+  tickets:JSON.parse(localStorage.getItem('ipnotec_tickets')||'[]'),
+  applications:JSON.parse(localStorage.getItem('ipnotec_apps')||'[]')
 };
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 function save(){
-  localStorage.setItem('tripnotec_profile',JSON.stringify(state.profile));
-  localStorage.setItem('tripnotec_tickets',JSON.stringify(state.tickets));
-  localStorage.setItem('tripnotec_apps',JSON.stringify(state.applications));
+  localStorage.setItem('ipnotec_profile',JSON.stringify(state.profile));
+  localStorage.setItem('ipnotec_tickets',JSON.stringify(state.tickets));
+  localStorage.setItem('ipnotec_apps',JSON.stringify(state.applications));
 }
 function esc(v){return String(v||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 
@@ -1354,10 +1354,10 @@ function renderBuy(){
 }
 
 function downloadTicket(t){
-  const text=`TRIPNOTEC\nTECHNO LOVES YOU\n\n${t.month} · ${t.name}\nTicket: ${t.code}\nAttendee: ${t.attendee}\nCity: ${t.city||'TBD'}\nDates: ${t.dates}\nBPM: ${t.bpm}\nTime: 11:11 AM – 11:11 PM\n\nIndividual 3-day package · 21+\nStay not included.`;
+  const text=`ipnotec\nTECHNO LOVES YOU\n\n${t.month} · ${t.name}\nTicket: ${t.code}\nAttendee: ${t.attendee}\nCity: ${t.city||'TBD'}\nDates: ${t.dates}\nBPM: ${t.bpm}\nTime: 11:11 AM – 11:11 PM\n\nIndividual 3-day package · 21+\nStay not included.`;
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'}));
-  a.download=`TRIPNOTEC-${t.code}.txt`;a.click();URL.revokeObjectURL(a.href);
+  a.download=`ipnotec-${t.code}.txt`;a.click();URL.revokeObjectURL(a.href);
   playSuccess();
 }
 
@@ -1368,7 +1368,7 @@ function renderAuth(step,contact,type){
   const c=$('#authContent');
   if(step===1){
     c.innerHTML=`
-      <span class="kicker">TRIPNOTEC ACCESS</span>
+      <span class="kicker">ipnotec ACCESS</span>
       <h2>VERIFY YOUR IDENTITY.</h2>
       <p style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6">Use a phone number or email address. This standalone demo does not send a real message.</p>
       <div class="field" style="margin-bottom:12px">
@@ -1466,7 +1466,7 @@ function renderOrgForm(){
         :`<input id="f_${f[0]}" name="${f[0]}" type="${f[2]}" maxlength="200" placeholder="${f[3]}">`}
     </div>`).join('')+
     (selectedCat==='space'?`<label class="check field full"><input type="checkbox" id="capacityAgree"><span>I confirm this space has a legal operating capacity of at least 1000 guests and can provide supporting documentation.</span></label>`:'')+
-    `<label class="check field full"><input type="checkbox" id="consent"><span>I consent to TRIPNOTEC storing these details in this browser for this demo and contacting me about relevant cycles.</span></label>
+    `<label class="check field full"><input type="checkbox" id="consent"><span>I consent to ipnotec storing these details in this browser for this demo and contacting me about relevant cycles.</span></label>
      <div class="field full"><button class="btn-console magenta" type="submit">SUBMIT PARTNER APPLICATION</button></div>`;
 }
 
