@@ -1,0 +1,1577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TRIPNOTEC — CODE / BUILD / LAUNCH / PARTY</title>
+<meta name="description" content="TRIPNOTEC is a recurring three-day techno experience: Pre, Party and After, every month.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--black:#040406;
+--surface:#080a0e;
+--panel:#0d1017;
+--raised:#121620;
+--edge:#1e2230;
+--edge2:#282e40;
+--cyan:#00e8ff;
+--magenta:#ff0099;
+--yellow:#ffe600;
+--green:#00ff7a;
+--white:#eef2f8;
+--dim:#5a6280;
+--dim2:#323850;
+--display:bebas neue,impact,sans-serif;
+--ui:rajdhani,system-ui,sans-serif;
+--mono:jetbrains mono,monospace;
+--radius:3px;
+--glow-cyan:0 0 6px rgba(0,232,255,.7),0 0 18px rgba(0,232,255,.25),0 0 40px rgba(0,232,255,.08);
+--glow-magenta:0 0 6px rgba(255,0,153,.7),0 0 18px rgba(255,0,153,.25),0 0 40px rgba(255,0,153,.08);
+--glow-yellow:0 0 6px rgba(255,230,0,.7),0 0 18px rgba(255,230,0,.25),0 0 40px rgba(255,230,0,.08);
+--glow-green:0 0 6px rgba(0,255,122,.7),0 0 18px rgba(0,255,122,.25),0 0 40px rgba(0,255,122,.08);
+box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);
+padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--black);color:var(--white);font-family:var(--ui);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--edge2);border-radius:2px}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(4,6,12,.96);
+  border-bottom:1px solid rgba(0,232,255,.25);
+  display:flex;align-items:center;gap:0;
+  height:50px;
+  box-shadow:0 1px 0 rgba(0,232,255,.12),0 4px 30px rgba(0,0,0,.9);
+  backdrop-filter:blur(8px);
+}
+.brand{
+  font-family:var(--display);
+  font-size:22px;letter-spacing:3px;
+  padding:0 20px;
+  border-right:1px solid var(--edge);
+  height:100%;display:flex;align-items:center;
+  color:var(--white);user-select:none;
+  min-width:170px;
+  position:relative;
+}
+.brand::after{
+  content:'';position:absolute;bottom:0;left:20px;right:20px;
+  height:1px;background:var(--cyan);opacity:.3;
+}
+.brand span{color:var(--cyan)}
+.nav{display:flex;height:100%;align-items:center;flex:1;padding:0 8px;gap:2px}
+.nav button{
+  font-family:var(--ui);font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  background:none;border:1px solid transparent;
+  color:var(--dim);
+  padding:0 14px;height:34px;border-radius:var(--radius);
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.nav button:hover,.nav button.active{
+  background:var(--raised);border-color:var(--edge2);
+  color:var(--white);
+}
+.nav button.active{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(0,232,255,.06);
+  box-shadow:var(--glow-cyan),inset 0 0 12px rgba(0,232,255,.05);
+}
+.nav-right{display:flex;align-items:center;gap:6px;padding:0 12px;border-left:1px solid var(--edge);height:100%}
+.btn-buy-top{
+  font-family:var(--ui);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:var(--yellow);color:#000;
+  border:none;padding:0 16px;height:32px;border-radius:var(--radius);
+  cursor:pointer;transition:all .15s;
+}
+.btn-buy-top:hover{background:#fff;box-shadow:0 0 12px rgba(255,224,0,.4)}
+.led-dot{width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:var(--glow-green);animation:pulse-led 2s ease-in-out infinite}
+@keyframes pulse-led{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ─── MOBILE NAV ─── */
+.mobile-nav-controls{display:none;align-items:center;gap:8px;padding:0 12px;margin-left:auto}
+.mobile-menu-toggle{
+  font-family:var(--ui);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:var(--raised);border:1px solid var(--edge2);color:var(--dim);
+  padding:0 12px;height:32px;border-radius:var(--radius);cursor:pointer;
+}
+.mobile-menu{
+  display:none;flex-direction:column;gap:4px;padding:12px;
+  background:var(--surface);border-bottom:1px solid var(--edge);
+}
+.mobile-menu.open{display:flex}
+.mobile-menu button{
+  font-family:var(--ui);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:var(--raised);border:1px solid var(--edge);color:var(--dim);
+  padding:12px 16px;border-radius:var(--radius);cursor:pointer;text-align:left;
+}
+.mobile-menu button.active,.mobile-menu button:hover{border-color:var(--cyan);color:var(--cyan)}
+.mobile-buy{background:var(--yellow)!important;color:#000!important;border-color:var(--yellow)!important}
+@media(max-width:900px){
+  .nav{display:none}
+  .nav-right{display:none}
+  .mobile-nav-controls{display:flex}
+}
+
+/* ─── VIEWS ─── */
+.view{display:none}.view.active{display:block}
+main{min-height:calc(100vh - 52px)}
+
+/* ─── HERO CONSOLE ─── */
+.hero{
+  background:var(--black);
+  border-bottom:1px solid var(--cyan);
+  padding:0;overflow:hidden;
+  position:relative;
+  box-shadow:0 0 0 1px rgba(0,232,255,.12),inset 0 0 120px rgba(0,0,0,.7);
+}
+/* top + bottom cyan border lines like the reference poster */
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,transparent,var(--cyan),var(--magenta),var(--cyan),transparent);
+  z-index:2;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,var(--cyan) 30%,var(--magenta) 70%,transparent);
+  z-index:2;
+}
+/* Concert crowd background — SVG data URI approximating the dark stage/crowd look */
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 30%,rgba(0,80,120,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 60%,rgba(120,0,80,.12) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 70%,rgba(255,180,0,.06) 0%,transparent 60%),
+    linear-gradient(to bottom,#080a12 0%,#04060a 60%,#020305 100%);
+}
+/* vertical cyan LED lines top-right (reference has laser beams) */
+.hero-lasers{
+  position:absolute;top:0;right:80px;bottom:0;z-index:1;pointer-events:none;
+  width:200px;
+  background:
+    linear-gradient(to bottom,rgba(0,232,255,.18) 0%,transparent 55%),
+    linear-gradient(20deg,transparent 40%,rgba(255,0,180,.10) 40%,transparent 42%),
+    linear-gradient(-15deg,transparent 50%,rgba(255,220,0,.07) 50%,transparent 52%);
+}
+.hero-inner{
+  max-width:1400px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 380px;
+  min-height:480px;
+  position:relative;z-index:1;
+}
+.hero-deck{
+  padding:36px 44px;display:flex;flex-direction:column;gap:24px;
+  border-right:1px solid rgba(0,232,255,.2);
+  position:relative;
+}
+/* left vertical LED strip — matches the reference side meter */
+.hero-deck::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--cyan) 0%,var(--cyan) 30%,var(--magenta) 55%,var(--yellow) 80%,var(--green) 100%);
+  box-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,232,255,.3);
+}
+.hero-kicker{
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;
+  color:var(--cyan);text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-kicker::before{content:'';width:20px;height:1px;background:var(--cyan)}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(80px,10vw,140px);
+  line-height:.88;letter-spacing:6px;
+  color:var(--white);
+  text-shadow:0 0 40px rgba(255,255,255,.06);
+}
+/* NOTEC gets the outlined look — matches the reference poster exactly */
+.hero-title span{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:2px var(--cyan);
+  text-shadow:0 0 30px rgba(0,232,255,.4);
+  letter-spacing:6px;
+}
+.hero-sub{
+  font-size:15px;font-weight:500;color:var(--dim);
+  max-width:440px;line-height:1.6;letter-spacing:.3px;
+}
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Physical buttons */
+.btn-console{
+  font-family:var(--ui);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  border:1px solid var(--edge2);background:var(--raised);color:var(--white);
+  padding:0 24px;height:44px;border-radius:var(--radius);
+  cursor:pointer;transition:all .2s;position:relative;
+  overflow:hidden;
+}
+.btn-console::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,.04),transparent);
+}
+.btn-console:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow-cyan);transform:translateY(-1px)}
+.btn-console.yellow{border-color:var(--yellow);color:#000;background:var(--yellow)}
+.btn-console.yellow:hover{background:#fff;box-shadow:var(--glow-yellow)}
+.btn-console.magenta{border-color:var(--magenta);color:var(--magenta)}
+.btn-console.magenta:hover{background:var(--magenta);color:#000;box-shadow:var(--glow-magenta)}
+
+/* Hero right panel */
+.hero-panel{
+  padding:20px;display:flex;flex-direction:column;gap:14px;
+  background:rgba(4,6,10,.85);
+  border-left:1px solid rgba(0,232,255,.15);
+  backdrop-filter:blur(2px);
+}
+.display-screen{
+  background:#020408;
+  border:1px solid var(--cyan);border-radius:var(--radius);
+  padding:18px;
+  font-family:var(--mono);
+  position:relative;
+  box-shadow:inset 0 0 24px rgba(0,0,0,.8),0 0 12px rgba(0,232,255,.08);
+}
+.display-screen::before{
+  content:'DISPLAY';position:absolute;top:-1px;left:12px;
+  font-size:8px;letter-spacing:3px;color:var(--cyan);
+  background:#020408;padding:0 6px;
+  text-shadow:var(--glow-cyan);
+}
+.display-bpm{font-size:52px;font-weight:700;color:var(--cyan);
+  line-height:1;text-shadow:var(--glow-cyan);letter-spacing:-1px;
+}
+.display-label{font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:4px}
+.display-line{height:1px;background:var(--edge);margin:12px 0}
+.display-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.display-stat-item{font-size:10px;color:var(--dim);letter-spacing:1px}
+.display-stat-item strong{display:block;font-family:var(--display);font-size:26px;
+  color:var(--yellow);letter-spacing:1px;text-shadow:var(--glow-yellow)}
+
+/* Control buttons row */
+.control-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ctrl-btn{
+  background:var(--raised);border:1px solid var(--edge);
+  color:var(--dim);
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  padding:10px 4px;border-radius:var(--radius);cursor:pointer;
+  text-align:center;transition:all .15s;
+}
+.ctrl-btn.c{border-color:var(--cyan);color:var(--cyan)}
+.ctrl-btn.m{border-color:var(--magenta);color:var(--magenta)}
+.ctrl-btn.y{border-color:var(--yellow);color:var(--yellow)}
+.ctrl-btn.g{border-color:var(--green);color:var(--green)}
+.ctrl-btn:hover{transform:scale(.97);filter:brightness(1.3)}
+.ctrl-btn.active{
+  animation:btn-active .3s ease;
+}
+@keyframes btn-active{0%{filter:brightness(2);transform:scale(.95)}100%{}}
+
+/* LED bar */
+.led-bar{display:flex;flex-direction:column;gap:3px;align-items:center}
+.led-row{display:flex;gap:2px}
+.led{width:5px;height:5px;border-radius:1px;background:var(--edge);transition:background .2s}
+.led.on-g{background:var(--green);box-shadow:0 0 4px var(--green)}
+.led.on-y{background:var(--yellow);box-shadow:0 0 4px var(--yellow)}
+.led.on-r{background:var(--magenta);box-shadow:0 0 4px var(--magenta)}
+
+/* Knob */
+.knob-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.knob{
+  width:48px;height:48px;border-radius:50%;
+  background:conic-gradient(from 120deg,var(--raised) 0deg,var(--edge2) 90deg,var(--raised) 180deg);
+  border:2px solid var(--edge2);
+  position:relative;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);
+  transition:transform .3s;
+}
+.knob:hover{transform:rotate(15deg);border-color:var(--cyan)}
+.knob::after{
+  content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  width:2px;height:10px;background:var(--cyan);border-radius:1px;
+}
+.knob-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+
+/* ─── STATLINE ─── */
+.statline{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid rgba(0,232,255,.2);
+  border-top:1px solid rgba(0,232,255,.1);
+  background:rgba(6,8,14,.95);
+}
+.stat{
+  padding:18px 24px;
+  border-right:1px solid var(--edge);
+  display:flex;flex-direction:column;gap:4px;
+  position:relative;
+}
+.stat:last-child{border-right:none}
+.stat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.stat:nth-child(1)::before{background:var(--cyan)}
+.stat:nth-child(2)::before{background:var(--magenta)}
+.stat:nth-child(3)::before{background:var(--yellow)}
+.stat:nth-child(4)::before{background:var(--green)}
+.stat b{font-family:var(--display);font-size:42px;line-height:1;letter-spacing:1px}
+.stat:nth-child(1) b{color:var(--cyan);text-shadow:var(--glow-cyan)}
+.stat:nth-child(2) b{color:var(--magenta);text-shadow:var(--glow-magenta)}
+.stat:nth-child(3) b{color:var(--yellow);text-shadow:var(--glow-yellow)}
+.stat:nth-child(4) b{color:var(--green);text-shadow:var(--glow-green)}
+.stat small{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+@media(max-width:700px){.statline{grid-template-columns:1fr 1fr}.stat{border-bottom:1px solid var(--edge)}}
+
+/* ─── SECTION STRUCTURE ─── */
+.section-wrap{max-width:1400px;margin:0 auto;padding:40px 24px}
+.section-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;margin-bottom:32px;
+  flex-wrap:wrap;
+}
+.section-head-text .kicker{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--cyan);
+  text-transform:uppercase;display:block;margin-bottom:8px;
+}
+.section-head-text h2{
+  font-family:var(--display);font-size:clamp(36px,5vw,64px);
+  letter-spacing:2px;line-height:1;color:var(--white);
+}
+.section-head p{
+  font-size:14px;color:var(--dim);line-height:1.6;max-width:380px;
+  font-weight:500;margin-top:6px;
+}
+
+/* ─── CALENDAR SECTION ─── */
+#calSection{
+  background:var(--black);
+  border-top:none;
+  border-bottom:1px solid var(--edge);
+  /* subtle grid dot pattern like the reference */
+  background-image:radial-gradient(rgba(0,232,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.cal-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cal-filter-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;
+}
+.month-mode{display:flex;gap:0}
+.mode-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  background:var(--raised);border:1px solid var(--edge);color:var(--dim);
+  padding:6px 14px;cursor:pointer;transition:all .15s;
+}
+.mode-btn:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+.mode-btn:last-child{border-radius:0 var(--radius) var(--radius) 0;border-left:none}
+.mode-btn.active{background:var(--cyan);color:#000;border-color:var(--cyan)}
+
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;background:rgba(0,232,255,.06);
+  border:1px solid rgba(0,232,255,.2);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 30px rgba(0,0,0,.5);
+}
+.month-card{
+  background:var(--panel);padding:16px;
+  cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+  border:1px solid transparent;
+}
+.month-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--edge2);transition:all .2s;
+}
+.month-card:hover{background:var(--raised);}
+.month-card:hover::before{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+/* selected: full cyan border glow — key visual from the reference */
+.month-card.selected{
+  background:rgba(0,232,255,.04);
+  border:1px solid var(--cyan);
+  box-shadow:0 0 0 1px var(--cyan),0 0 20px rgba(0,232,255,.15),inset 0 0 20px rgba(0,232,255,.03);
+}
+.month-card.selected::before{background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.month-num{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:2px;margin-bottom:6px}
+.month-name-row{font-family:var(--display);font-size:22px;letter-spacing:2px;
+  color:var(--white);margin-bottom:10px;line-height:1}
+.month-days{display:flex;gap:6px;margin-bottom:10px}
+.day-chip{
+  background:rgba(4,6,12,.8);border:1px solid var(--edge2);
+  border-radius:2px;padding:4px 8px;text-align:center;
+  font-size:10px;font-weight:600;min-width:36px;
+}
+.day-chip strong{display:block;font-family:var(--display);font-size:16px;line-height:1.1}
+.day-chip small{display:block;font-family:var(--mono);font-size:7px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}
+/* PARTY chip — magenta glow exactly like the reference */
+.day-chip.party{
+  border-color:var(--magenta);
+  background:rgba(255,0,153,.08);
+  box-shadow:0 0 8px rgba(255,0,153,.3),inset 0 0 6px rgba(255,0,153,.05);
+}
+.day-chip.party strong{color:var(--magenta);text-shadow:0 0 8px rgba(255,0,153,.6)}
+.month-bpm{
+  font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;
+}
+.month-bpm::before{content:'◉';color:var(--green);font-size:8px}
+.bpm-wave{
+  flex:1;height:16px;display:flex;align-items:flex-end;gap:1px;overflow:hidden;
+}
+.bpm-wave-bar{
+  width:2px;border-radius:1px 1px 0 0;
+  animation:wave-anim 1.5s ease-in-out infinite;
+}
+
+@media(max-width:900px){.calendar{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.calendar{grid-template-columns:repeat(2,1fr)}}
+
+/* ─── CITY CONSOLE PANEL ─── */
+#cityConsole{
+  background:var(--surface);
+  border:1px solid var(--cyan);
+  border-radius:var(--radius);
+  margin-top:20px;
+  overflow:hidden;
+  display:none;
+  box-shadow:0 0 0 1px rgba(0,232,255,.1),0 0 40px rgba(0,232,255,.1),0 0 80px rgba(0,232,255,.04);
+  animation:console-appear .25s cubic-bezier(.2,.8,.4,1);
+}
+@keyframes console-appear{from{opacity:0;transform:translateY(-8px);box-shadow:none}to{opacity:1;transform:translateY(0)}}
+#cityConsole.active{display:block}
+.city-console-header{
+  background:rgba(0,232,255,.04);
+  border-bottom:1px solid rgba(0,232,255,.18);
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+}
+.city-console-title{
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--cyan);
+  text-transform:uppercase;display:flex;align-items:center;gap:8px;
+}
+.city-console-title::before{content:'▶';font-size:8px}
+.city-console-month{font-family:var(--display);font-size:28px;letter-spacing:3px;color:var(--white)}
+.city-console-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1px;background:var(--edge);
+  max-height:480px;overflow-y:auto;
+}
+.city-card{
+  background:var(--panel);padding:16px;
+  cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;border:1px solid transparent;
+}
+.city-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--edge2);transition:background .15s;
+}
+.city-card:hover{background:rgba(0,232,255,.03);border-color:rgba(0,232,255,.3)}
+.city-card:hover::before{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+/* selected city = yellow glow, matching reference Bengaluru card */
+.city-card.selected-city{
+  background:rgba(255,230,0,.05);
+  border-color:var(--yellow);
+  box-shadow:0 0 14px rgba(255,230,0,.12),inset 0 0 10px rgba(255,230,0,.03);
+}
+.city-card.selected-city::before{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+.city-state-label{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+.city-name{font-family:var(--display);font-size:20px;letter-spacing:2px;color:var(--white)}
+.city-slots{font-size:11px;color:var(--dim);font-weight:600}
+.city-status{
+  font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--green);display:flex;align-items:center;gap:4px;
+}
+.city-status::before{content:'●';font-size:6px;animation:pulse-led 2s infinite}
+.city-status.soon{color:var(--yellow)}
+.city-status.soon::before{color:var(--yellow)}
+
+/* ─── EVENT DETAIL ─── */
+.detail-card{
+  background:var(--surface);
+  border:1px solid var(--edge2);border-radius:var(--radius);
+  margin-top:20px;overflow:hidden;
+  position:relative;
+}
+.detail-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--cyan),var(--magenta),var(--yellow));
+  z-index:1;
+}
+.detail-inner{display:grid;grid-template-columns:1fr auto;gap:0}
+.detail-main{padding:28px 32px;border-right:1px solid var(--edge)}
+.detail-kicker{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--cyan);
+  text-transform:uppercase;margin-bottom:8px}
+.detail-title{font-family:var(--display);font-size:clamp(32px,4vw,52px);
+  letter-spacing:2px;color:var(--white);margin-bottom:6px;line-height:1}
+.detail-bpm{font-family:var(--mono);font-size:13px;color:var(--magenta);letter-spacing:2px;margin-bottom:18px}
+.detail-desc{font-size:14px;color:var(--dim);line-height:1.7;margin-bottom:20px;max-width:520px}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.act{
+  background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--radius);padding:14px;
+  position:relative;
+}
+.act::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.act:nth-child(1)::before{background:var(--cyan)}
+.act:nth-child(2)::before{background:var(--magenta)}
+.act:nth-child(3)::before{background:var(--green)}
+.act i{font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;display:block;margin-bottom:6px}
+.act p{font-size:12px;color:var(--white);line-height:1.5;font-weight:500}
+
+.detail-price{
+  padding:28px 24px;display:flex;flex-direction:column;
+  gap:16px;min-width:240px;align-items:flex-start;
+}
+.price-amount{font-family:var(--display);font-size:52px;color:var(--yellow);
+  letter-spacing:1px;text-shadow:var(--glow-yellow);line-height:1}
+.price-info{font-size:12px;color:var(--dim);line-height:1.7;font-weight:500}
+@media(max-width:700px){.detail-inner{grid-template-columns:1fr}.detail-main{border-right:none;border-bottom:1px solid var(--edge)}.acts{grid-template-columns:1fr}}
+
+/* ─── ORGANIZERS ─── */
+#organizers{background:var(--black)}
+.org-hero{
+  background:var(--panel);border-bottom:2px solid var(--edge);
+  padding:48px 24px;
+}
+.org-hero-inner{max-width:1400px;margin:0 auto}
+.org-hero .kicker{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--magenta);
+  text-transform:uppercase;display:block;margin-bottom:12px}
+.org-hero h1{font-family:var(--display);font-size:clamp(48px,7vw,96px);
+  letter-spacing:3px;line-height:.95;color:var(--white)}
+.org-hero h1 span{color:var(--magenta)}
+.org-hero p{font-size:15px;color:var(--dim);max-width:540px;line-height:1.7;margin-top:16px;font-weight:500}
+
+.cat-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;
+  margin-bottom:32px;
+}
+.cat-btn{
+  background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--radius);padding:16px;
+  cursor:pointer;text-align:left;transition:all .15s;
+}
+.cat-btn:hover{border-color:var(--magenta);background:var(--raised)}
+.cat-btn.active{border-color:var(--magenta);background:rgba(255,0,144,.06)}
+.cat-btn b{display:block;font-size:13px;font-weight:700;letter-spacing:.5px;
+  color:var(--white);margin-bottom:4px}
+.cat-btn small{font-size:11px;color:var(--dim);line-height:1.4;display:block}
+
+/* ─── FORM ─── */
+.form-surface{background:var(--surface);border:1px solid var(--edge);
+  border-radius:var(--radius);padding:32px;max-width:900px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.field input,.field select,.field textarea{
+  background:var(--panel);border:1px solid var(--edge2);border-radius:var(--radius);
+  color:var(--white);font-family:var(--ui);font-size:14px;font-weight:500;
+  padding:10px 14px;outline:none;transition:border-color .15s;
+  -webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan)}
+.field textarea{resize:vertical;min-height:90px}
+.field select option{background:var(--panel)}
+.check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:var(--dim);line-height:1.5}
+.check input{width:16px;height:16px;margin-top:2px;accent-color:var(--cyan);flex-shrink:0;cursor:pointer}
+
+/* ─── ACCOUNT ─── */
+#account{background:var(--black)}
+.history{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.history-card{background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--radius);padding:24px}
+.history-card h3{font-family:var(--display);font-size:24px;letter-spacing:2px;
+  margin-bottom:16px;color:var(--white)}
+.record{padding:12px 0;border-bottom:1px solid var(--edge);font-size:13px;font-weight:600}
+.record b{display:block;color:var(--white);margin-bottom:2px}
+.record small{color:var(--dim);font-family:var(--mono);font-size:10px;letter-spacing:1px}
+.empty{font-size:13px;color:var(--dim);font-family:var(--mono);
+  padding:20px;text-align:center;border:1px dashed var(--edge2);
+  border-radius:var(--radius);letter-spacing:1px}
+@media(max-width:600px){.history{grid-template-columns:1fr}}
+
+/* ─── FOOTER ─── */
+.footer{
+  background:rgba(4,6,12,.98);
+  border-top:1px solid rgba(0,232,255,.2);
+  padding:0 24px;height:42px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:10px;letter-spacing:2px;
+  color:var(--dim);gap:12px;flex-wrap:wrap;
+  box-shadow:0 -1px 0 rgba(0,232,255,.06);
+}
+.footer-brand{color:var(--white);font-weight:700}
+.footer-leds{display:flex;gap:8px;align-items:center}
+.footer-led{font-size:9px;letter-spacing:2px;display:flex;align-items:center;gap:5px}
+.footer-led .dot{width:5px;height:5px;border-radius:50%}
+.footer-led.c .dot{background:var(--cyan);box-shadow:var(--glow-cyan)}
+.footer-led.m .dot{background:var(--magenta);box-shadow:var(--glow-magenta)}
+.footer-led.y .dot{background:var(--yellow);box-shadow:var(--glow-yellow)}
+#footerTechnoText{color:var(--cyan)}
+
+/* ─── MODALS ─── */
+.modal{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal.open{opacity:1;pointer-events:all}
+.dialog{
+  background:rgba(6,8,16,.97);border:1px solid rgba(0,232,255,.3);
+  border-radius:var(--radius);width:100%;max-width:560px;
+  max-height:90vh;overflow-y:auto;padding:32px;
+  position:relative;
+  box-shadow:0 0 0 1px rgba(0,232,255,.1),0 0 60px rgba(0,0,0,.9),0 0 30px rgba(0,232,255,.06);
+}
+.dialog::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--cyan),var(--magenta),var(--yellow));
+  box-shadow:0 0 10px rgba(0,232,255,.4);
+}
+.close-btn{
+  position:absolute;top:16px;right:16px;
+  background:var(--raised);border:1px solid var(--edge);
+  color:var(--dim);width:32px;height:32px;border-radius:var(--radius);
+  cursor:pointer;font-size:18px;line-height:30px;text-align:center;transition:all .15s;
+}
+.close-btn:hover{border-color:var(--magenta);color:var(--magenta)}
+.steps{display:flex;gap:4px;margin-bottom:24px}
+.step{width:32px;height:3px;background:var(--edge2);border-radius:2px;transition:background .3s}
+.step.on{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+.dialog .kicker{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--cyan);
+  text-transform:uppercase;display:block;margin-bottom:8px}
+.dialog h2{font-family:var(--display);font-size:36px;letter-spacing:2px;
+  margin-bottom:16px;line-height:1}
+.ticket-preview{
+  background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--radius);padding:20px;margin-bottom:20px;
+}
+.ticket-preview strong{font-family:var(--display);font-size:24px;
+  letter-spacing:2px;display:block;margin-bottom:12px}
+.ticket-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ticket-meta div{font-size:12px;color:var(--dim);font-weight:500}
+.ticket-meta div small{display:block;font-family:var(--mono);font-size:9px;
+  letter-spacing:2px;color:var(--dim2);margin-bottom:2px;text-transform:uppercase}
+.otp-display{
+  font-family:var(--mono);font-size:48px;font-weight:700;
+  color:var(--cyan);letter-spacing:12px;text-align:center;
+  padding:24px;text-shadow:var(--glow-cyan);
+  background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--radius);margin:16px 0;
+}
+.notice{font-size:12px;color:var(--dim);line-height:1.6;
+  padding:12px;background:var(--panel);border-radius:var(--radius);
+  border-left:2px solid var(--cyan);margin-bottom:16px}
+
+/* ─── TOAST ─── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--raised);border:1px solid var(--cyan);
+  color:var(--white);font-family:var(--mono);font-size:11px;letter-spacing:2px;
+  padding:12px 24px;border-radius:var(--radius);
+  opacity:0;pointer-events:none;transition:all .3s;z-index:999;
+  box-shadow:var(--glow-cyan);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── WAVEFORM ─── */
+.waveform{display:flex;align-items:flex-end;gap:1px;height:24px;padding:0 2px}
+.waveform span{width:2px;border-radius:1px 1px 0 0;display:block}
+
+/* utility */
+.accent-cyan{color:var(--cyan)}
+.accent-magenta{color:var(--magenta)}
+.accent-yellow{color:var(--yellow)}
+.accent-green{color:var(--green)}
+
+/* ─── SCANLINE OVERLAY — subtle CRT feel like the reference ─── */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent 0px,transparent 2px,
+    rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px
+  );
+}
+
+/* ─── VERTICAL LED METER STRIPS (reference left/right side) ─── */
+.led-meter{
+  display:flex;flex-direction:column;gap:2px;
+  padding:4px 0;
+}
+.led-meter-seg{
+  width:4px;height:5px;border-radius:1px;
+  background:var(--edge);
+  transition:background .1s,box-shadow .1s;
+}
+
+/* ─── CTRL BUTTON PHYSICAL PRESS ─── */
+.ctrl-btn:active{
+  transform:scale(.94);
+  filter:brightness(1.6);
+}
+
+/* ─── KNOB SHADOW — more physical depth ─── */
+.knob{
+  box-shadow:
+    0 3px 10px rgba(0,0,0,.8),
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 -1px 0 rgba(0,0,0,.4) inset;
+}
+
+/* ─── MONTH CARD NUMBER — glow on selected ─── */
+.month-card.selected .month-num{color:var(--cyan);text-shadow:0 0 6px var(--cyan)}
+.month-card.selected .month-name-row{color:var(--white)}
+
+/* ─── SECTION BACKGROUND ALTERNATING ─── */
+#organizers{
+  background:var(--black);
+  background-image:radial-gradient(rgba(255,0,153,.03) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+#account{
+  background:var(--black);
+  background-image:radial-gradient(rgba(0,255,122,.03) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* ─── PRICE BLOCK — yellow glow like reference ₹10,001 ─── */
+.price-amount{
+  text-shadow:0 0 20px rgba(255,230,0,.5),0 0 40px rgba(255,230,0,.2);
+}
+
+/* ─── FORM INPUTS — cyan focus glow ─── */
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 1px rgba(0,232,255,.2),0 0 12px rgba(0,232,255,.08);
+}
+
+/* ─── CITY NAME — hover yellow like reference ─── */
+.city-card:hover .city-name{color:var(--cyan)}
+.city-card.selected-city .city-name{color:var(--yellow);text-shadow:0 0 8px rgba(255,230,0,.4)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-panel{display:none}
+  .hero-deck{padding:24px 20px}
+}
+@media(max-width:600px){
+  .section-wrap{padding:24px 14px}
+  .form-grid{grid-template-columns:1fr}
+  .dialog{padding:20px}
+  .statline{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<header class="topbar">
+  <div class="brand">TRIP<span>NOTEC</span></div>
+  <nav class="nav">
+    <button class="home-mark" id="navHome" type="button">HOME</button>
+    <button data-view="events" class="active">CALENDAR</button>
+    <button data-view="organizers">ORGANIZERS</button>
+    <button data-view="account" class="profile-btn">ACCOUNT</button>
+  </nav>
+  <div class="nav-right">
+    <span class="led-dot"></span>
+    <button class="btn-buy-top" id="topBuy">BUY TICKET</button>
+  </div>
+  <div class="mobile-nav-controls">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-expanded="false" aria-controls="mobileMenu">MENU</button>
+  </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+  <button class="home-mark" id="mobileHome" type="button">HOME</button>
+  <button data-view="events" class="active">CALENDAR</button>
+  <button data-view="organizers">ORGANIZERS</button>
+  <button data-view="account">ACCOUNT</button>
+  <button class="mobile-buy" id="mobileBuy" type="button">BUY TICKET</button>
+</nav>
+
+<main>
+
+<!-- ─── EVENTS VIEW ─── -->
+<section id="events" class="view active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lasers"></div>
+    <div class="hero-inner">
+      <div class="hero-deck">
+        <div class="hero-kicker">TECHNO LOVES <span id="heroName">YOU</span> · 3 DAYS EVERY MONTH</div>
+        <h1 class="hero-title">TRIP<span>NOTEC</span></h1>
+        <p class="hero-sub">A numbered, three-act techno ritual. Pre. Party. After. One thousand and one people. One fixed package. Every month.</p>
+        <div class="hero-buttons">
+          <button class="btn-console yellow" id="heroBuy">CHOOSE YOUR CYCLE</button>
+          <button class="btn-console" data-jump-organizers>WORK WITH US</button>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="display-screen">
+          <div class="display-bpm" id="heroBpmDisplay">124–138</div>
+          <div class="display-label">BPM RANGE · JAN · GENESIS</div>
+          <div class="display-line"></div>
+          <div class="display-stats">
+            <div class="display-stat-item"><strong>1001</strong>HARD CAP</div>
+            <div class="display-stat-item"><strong>12</strong>CYCLES/YR</div>
+            <div class="display-stat-item"><strong>₹10K</strong>PACKAGE</div>
+            <div class="display-stat-item"><strong>21+</strong>ENTRY</div>
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="ctrl-btn c">CODE</div>
+          <div class="ctrl-btn m">BUILD</div>
+          <div class="ctrl-btn y">LAUNCH</div>
+          <div class="ctrl-btn g">PARTY</div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;justify-content:space-between">
+          <div class="knob-wrap">
+            <div class="knob" id="bpmKnob"></div>
+            <div class="knob-label">BPM</div>
+          </div>
+          <div class="led-bar" id="heroBpmBar"></div>
+          <div class="knob-wrap">
+            <div class="knob" id="volKnob"></div>
+            <div class="knob-label">VOL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATLINE -->
+  <section class="statline">
+    <div class="stat"><b>1001</b><small>HARD GUEST CAP</small></div>
+    <div class="stat"><b>12</b><small>CYCLES EVERY YEAR</small></div>
+    <div class="stat"><b>₹10,001</b><small>ONE 3-DAY PACKAGE</small></div>
+    <div class="stat"><b>21+</b><small>ENTRY REQUIREMENT</small></div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section id="calSection">
+    <div class="section-wrap">
+      <div class="section-head">
+        <div class="section-head-text">
+          <span class="kicker">THE RECURRING CALENDAR</span>
+          <h2>PICK YOUR FREQUENCY.</h2>
+          <p>Every cycle runs for three consecutive days from 11:11 AM to 11:11 PM. Select a month — city slots load instantly below.</p>
+        </div>
+      </div>
+      <div class="calendar" id="calendarGrid"></div>
+
+      <!-- CITY CONSOLE — appears instantly on month select -->
+      <div id="cityConsole">
+        <div class="city-console-header">
+          <div>
+            <div class="city-console-title">INDIA CITY SLOTS · <span id="consoleCycleLabel">CYCLE 01</span></div>
+            <div class="city-console-month" id="consoleMonthName">JAN · GENESIS</div>
+          </div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:2px;text-align:right">
+            <span style="color:var(--green)">● 33 CITIES</span><br>SELECT TO BOOK
+          </div>
+        </div>
+        <div class="city-console-grid" id="cityGrid"></div>
+      </div>
+
+      <!-- EVENT DETAIL -->
+      <div id="eventDetail"></div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ─── ORGANIZERS VIEW ─── -->
+<section id="organizers" class="view">
+  <div class="org-hero">
+    <div class="org-hero-inner">
+      <span class="kicker">THE PEOPLE BEHIND THE FREQUENCY</span>
+      <h1>BUILD<br><span>THE CYCLE.</span></h1>
+      <p>TRIPNOTEC is assembling a repeatable network of serious spaces, techno artists, technical operators, creators, vendors, brands and specialists.</p>
+    </div>
+  </div>
+  <div class="section-wrap">
+    <div class="section-head">
+      <div class="section-head-text">
+        <span class="kicker">PARTNER INTAKE</span>
+        <h2>CHOOSE YOUR ROLE.</h2>
+      </div>
+      <p>Select the category that best describes you. The application adapts to what our production team needs to know.</p>
+    </div>
+    <div class="cat-grid" id="categoryGrid"></div>
+    <div class="form-surface">
+      <form id="organizerForm" novalidate>
+        <div class="form-grid" id="organizerFields"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ACCOUNT VIEW ─── -->
+<section id="account" class="view">
+  <div class="section-wrap">
+    <div class="section-head">
+      <div class="section-head-text">
+        <span class="kicker">YOUR TRIPNOTEC</span>
+        <h2 id="accountTitle">ACCOUNT.</h2>
+      </div>
+      <button class="btn-console" id="accountAuth">SIGN IN</button>
+    </div>
+    <div class="history">
+      <div class="history-card">
+        <h3>TICKETS</h3>
+        <div id="ticketHistory"></div>
+      </div>
+      <div class="history-card">
+        <h3>APPLICATIONS</h3>
+        <div id="applicationHistory"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-brand">TRIPNOTEC</span>
+  <span id="footerTechnoText">TECHNO LOVES YOU</span>
+  <div class="footer-leds">
+    <span class="footer-led c"><span class="dot"></span>12 TEAMS</span>
+    <span class="footer-led m"><span class="dot"></span>1001 GUESTS</span>
+    <span class="footer-led y"><span class="dot"></span>12 CYCLES</span>
+  </div>
+  <span style="font-size:9px">Food · Entry · Music included · 21+</span>
+</footer>
+
+<!-- MODALS -->
+<div class="modal" id="buyModal">
+  <div class="dialog">
+    <button class="close-btn" data-close aria-label="Close">×</button>
+    <div class="steps"><i class="step on"></i><i class="step"></i><i class="step"></i></div>
+    <div id="buyContent"></div>
+  </div>
+</div>
+<div class="modal" id="authModal">
+  <div class="dialog">
+    <button class="close-btn" data-close aria-label="Close">×</button>
+    <div id="authContent"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── AUDIO ENGINE ───
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let ctx;
+function getCtx(){if(!ctx)ctx=new AudioCtx();return ctx}
+
+function playTone(freq,dur,type='sine',gain=0.3,detune=0){
+  try{
+    const a=getCtx(),o=a.createOscillator(),g=a.createGain();
+    o.type=type;o.frequency.value=freq;o.detune.value=detune;
+    g.gain.setValueAtTime(gain,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+dur);
+    o.connect(g);g.connect(a.destination);
+    o.start();o.stop(a.currentTime+dur);
+  }catch(e){}
+}
+
+function playClick(){playTone(800,0.06,'square',0.15)}
+function playSelect(){
+  playTone(440,0.08,'sine',0.2);
+  setTimeout(()=>playTone(660,0.12,'sine',0.15),40);
+}
+function playMonthSelect(){
+  playTone(330,0.05,'square',0.1);
+  setTimeout(()=>playTone(440,0.08,'square',0.12),60);
+  setTimeout(()=>playTone(660,0.12,'sine',0.2),120);
+}
+function playCitySelect(){
+  playTone(520,0.06,'sine',0.18);
+  setTimeout(()=>playTone(780,0.1,'sine',0.12),50);
+}
+function playBuy(){
+  [220,330,440,550,660].forEach((f,i)=>setTimeout(()=>playTone(f,0.15,'sine',0.15),i*40));
+}
+function playSuccess(){
+  [330,440,550,660,880].forEach((f,i)=>setTimeout(()=>playTone(f,0.18,'triangle',0.18),i*60));
+}
+function playError(){playTone(160,0.25,'sawtooth',0.25)}
+function playHover(){playTone(1200,0.03,'sine',0.05)}
+function playNav(){
+  playTone(660,0.06,'square',0.1);
+  setTimeout(()=>playTone(440,0.08,'sine',0.1),30);
+}
+function playKnob(){playTone(200+Math.random()*400,0.04,'sine',0.08)}
+function playModal(){
+  playTone(220,0.12,'sine',0.2);
+  setTimeout(()=>playTone(330,0.15,'sine',0.15),80);
+}
+function playClose(){playTone(330,0.1,'sine',0.15);setTimeout(()=>playTone(220,0.1,'sine',0.1),50)}
+function playSubmit(){
+  playTone(440,0.1,'square',0.12);
+  setTimeout(()=>playTone(660,0.1,'square',0.1),80);
+  setTimeout(()=>playTone(880,0.15,'sine',0.18),160);
+}
+function playCtrlBtn(color){
+  const map={c:880,m:660,y:550,g:440};
+  playTone(map[color]||660,0.15,'square',0.15);
+  setTimeout(()=>playTone((map[color]||660)*1.5,0.1,'sine',0.08),80);
+}
+
+// ─── DATA ───
+const events=[
+  ['JAN','31','01','02',124,138,'Genesis'],
+  ['FEB','01','02','03',126,140,'Pulse'],
+  ['MAR','02','03','04',128,142,'Voltage'],
+  ['APR','03','04','05',126,144,'Circuit'],
+  ['MAY','04','05','06',130,145,'Pressure'],
+  ['JUN','05','06','07',128,146,'Signal'],
+  ['JUL','06','07','08',130,148,'Heat'],
+  ['AUG','07','08','09',132,150,'Peak'],
+  ['SEP','08','09','10',128,146,'Return'],
+  ['OCT','09','10','11',126,144,'Shadow'],
+  ['NOV','10','11','12',125,142,'Ritual'],
+  ['DEC','11','12','13',124,150,'Finale']
+].map((x,i)=>({id:i+1,month:x[0],pre:x[1],party:x[2],after:x[3],min:x[4],max:x[5],name:x[6]}));
+
+// 33 Indian Techno Cities (3 per state, 11 states)
+const indiaCities=[
+  {city:'Bengaluru',state:'Karnataka',slots:1001,status:'active'},
+  {city:'Mysuru',state:'Karnataka',slots:500,status:'soon'},
+  {city:'Mangaluru',state:'Karnataka',slots:400,status:'soon'},
+  {city:'Mumbai',state:'Maharashtra',slots:1001,status:'active'},
+  {city:'Pune',state:'Maharashtra',slots:800,status:'active'},
+  {city:'Nagpur',state:'Maharashtra',slots:400,status:'soon'},
+  {city:'New Delhi',state:'Delhi / NCR',slots:1001,status:'active'},
+  {city:'Gurugram',state:'Delhi / NCR',slots:600,status:'active'},
+  {city:'Noida',state:'Delhi / NCR',slots:500,status:'soon'},
+  {city:'Panaji',state:'Goa',slots:1001,status:'active'},
+  {city:'Calangute',state:'Goa',slots:600,status:'soon'},
+  {city:'Margao',state:'Goa',slots:400,status:'soon'},
+  {city:'Chennai',state:'Tamil Nadu',slots:800,status:'active'},
+  {city:'Coimbatore',state:'Tamil Nadu',slots:400,status:'soon'},
+  {city:'Pondicherry',state:'Tamil Nadu',slots:500,status:'soon'},
+  {city:'Hyderabad',state:'Telangana',slots:1001,status:'active'},
+  {city:'Warangal',state:'Telangana',slots:300,status:'soon'},
+  {city:'Secunderabad',state:'Telangana',slots:500,status:'soon'},
+  {city:'Ahmedabad',state:'Gujarat',slots:600,status:'soon'},
+  {city:'Surat',state:'Gujarat',slots:400,status:'soon'},
+  {city:'Vadodara',state:'Gujarat',slots:350,status:'soon'},
+  {city:'Jaipur',state:'Rajasthan',slots:700,status:'soon'},
+  {city:'Udaipur',state:'Rajasthan',slots:500,status:'soon'},
+  {city:'Jodhpur',state:'Rajasthan',slots:350,status:'soon'},
+  {city:'Kolkata',state:'West Bengal',slots:800,status:'active'},
+  {city:'Siliguri',state:'West Bengal',slots:300,status:'soon'},
+  {city:'Durgapur',state:'West Bengal',slots:250,status:'soon'},
+  {city:'Chandigarh',state:'Punjab',slots:600,status:'soon'},
+  {city:'Amritsar',state:'Punjab',slots:400,status:'soon'},
+  {city:'Ludhiana',state:'Punjab',slots:350,status:'soon'},
+  {city:'Shimla',state:'Himachal Pradesh',slots:300,status:'soon'},
+  {city:'Manali',state:'Himachal Pradesh',slots:400,status:'soon'},
+  {city:'Dharamshala',state:'Himachal Pradesh',slots:300,status:'soon'},
+];
+
+const categories=[
+  ['space','Space Owner','1000+ capacity venues, resorts, clubs and unconventional spaces.'],
+  ['dj','Techno DJ','Techno-only selectors, live acts and hybrid performers.'],
+  ['production','Stage · Sound · AV','Stage, PA, lighting, lasers, power and technical production.'],
+  ['vendor','Pop-up Vendor','Fashion, art, wellness, merch and experiential counters.'],
+  ['creative','Creative','Photographers, filmmakers, drone pilots, VJs and visual artists.'],
+  ['corporate','Corporate SPOC','F&B, beverage, hospitality and partner representatives.'],
+  ['security','Security · Medical','Licensed security, crowd safety, ambulance and medical teams.'],
+  ['hospitality','Hospitality · F&B','Catering, bars, guest experience and accommodation teams.'],
+  ['compliance','Permits · Compliance','Licensing, insurance, legal, municipal and safety specialists.'],
+  ['logistics','Transport · Logistics','Crew transport, guest movement, freight and last-mile operations.'],
+  ['sponsor','Brand · Sponsor','Aligned brands, media partners and cultural collaborators.'],
+  ['other','Other Specialist','Tell us what exceptional capability you bring.'],
+];
+
+let selected=events[0],selectedCat='space',selectedCity=null,buyStep=1,pendingAuth=null;
+const state={
+  profile:JSON.parse(localStorage.getItem('tripnotec_profile')||'null'),
+  tickets:JSON.parse(localStorage.getItem('tripnotec_tickets')||'[]'),
+  applications:JSON.parse(localStorage.getItem('tripnotec_apps')||'[]')
+};
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function save(){
+  localStorage.setItem('tripnotec_profile',JSON.stringify(state.profile));
+  localStorage.setItem('tripnotec_tickets',JSON.stringify(state.tickets));
+  localStorage.setItem('tripnotec_apps',JSON.stringify(state.applications));
+}
+function esc(v){return String(v||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+function toast(t,type='info'){
+  const e=$('#toast');
+  e.textContent=t;
+  e.style.borderColor=type==='error'?'var(--magenta)':type==='success'?'var(--green)':'var(--cyan)';
+  e.style.boxShadow=type==='error'?'var(--glow-magenta)':type==='success'?'var(--glow-green)':'var(--glow-cyan)';
+  e.classList.add('show');
+  setTimeout(()=>e.classList.remove('show'),2800);
+  if(type==='error')playError();else if(type==='success')playSuccess();
+}
+
+// Update hero name
+function updateHeroName(){
+  const name=state.profile?.name||'YOU';
+  const short=name.split(' ')[0].toUpperCase();
+  $('#heroName').textContent=short;
+  $('#footerTechnoText').textContent=`TECHNO LOVES ${short}`;
+}
+
+// BPM LED bar — animated VU meter like the reference side meter
+let vuTick=0;
+function renderBpmBar(min,max){
+  const el=$('#heroBpmBar');
+  if(!el)return;
+  if($('#heroBpmDisplay'))$('#heroBpmDisplay').textContent=`${min}–${max}`;
+  const levels=20;
+  const base=(min+max)/2;
+  const baseHeight=Math.round((base-120)/(150-120)*levels);
+
+  function drawBar(){
+    const jitter=Math.floor(Math.sin(vuTick*0.3)*2+Math.random()*3);
+    const height=Math.max(4,Math.min(levels,baseHeight+jitter));
+    let html='';
+    for(let i=levels;i>=1;i--){
+      const on=i<=height;
+      const cl=i>levels*.8?'on-r':i>levels*.55?'on-y':'on-g';
+      html+=`<div class="led ${on?cl:''}"></div>`;
+    }
+    el.innerHTML=html;
+    vuTick++;
+  }
+  drawBar();
+  if(el._vuInterval)clearInterval(el._vuInterval);
+  el._vuInterval=setInterval(drawBar,120);
+}
+
+// Waveform generator — animated bars, per-month colour like the reference
+const waveColors=['#00e8ff','#ff0099','#ffe600','#00ff7a','#ff0099','#ffe600','#00ff7a','#00e8ff','#ff0099','#ffe600','#00e8ff','#ff0099'];
+function waveform(seed,color){
+  const bars=28;
+  let html='<div class="waveform" style="height:20px">';
+  for(let i=0;i<bars;i++){
+    const h=3+Math.abs(Math.sin((seed*0.3+i*0.7))*14+Math.sin(i*1.3)*6);
+    const opacity=0.35+Math.abs(Math.sin(i*0.5+seed*0.1))*0.5;
+    html+=`<span style="height:${h.toFixed(1)}px;background:${color};opacity:${opacity.toFixed(2)};box-shadow:0 0 3px ${color}60"></span>`;
+  }
+  return html+'</div>';
+}
+
+// Calendar
+function renderCalendar(){
+  $('#calendarGrid').innerHTML=events.map(e=>{
+    const sel=e.id===selected.id;
+    const col=waveColors[e.id-1];
+    return `<button class="month-card ${sel?'selected':''}" data-event="${e.id}" aria-pressed="${sel}">
+      <div class="month-num">CYCLE ${String(e.id).padStart(2,'0')}</div>
+      <div class="month-name-row">${e.month} · ${e.name}</div>
+      <div class="month-days">
+        <div class="day-chip"><strong>${e.pre}</strong><small>PRE</small></div>
+        <div class="day-chip party"><strong>${e.party}</strong><small>PARTY</small></div>
+        <div class="day-chip"><strong>${e.after}</strong><small>AFTER</small></div>
+      </div>
+      <div class="month-bpm">${e.min}–${e.max} BPM ${waveform(e.min+e.id,col)}</div>
+    </button>`;
+  }).join('');
+  $$('.month-card').forEach(b=>b.onclick=()=>{
+    playMonthSelect();
+    selected=events[+b.dataset.event-1];
+    renderCalendar();
+    renderBpmBar(selected.min,selected.max);
+    renderCityConsole();
+    renderDetail();
+    setTimeout(()=>$('#cityConsole').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+  });
+}
+
+// City Console — appears immediately on month select
+function renderCityConsole(){
+  const console_el=$('#cityConsole');
+  console_el.classList.remove('active');
+  void console_el.offsetWidth; // reflow for animation
+  console_el.classList.add('active');
+  $('#consoleCycleLabel').textContent=`CYCLE ${String(selected.id).padStart(2,'0')}`;
+  $('#consoleMonthName').textContent=`${selected.month} · ${selected.name}`;
+
+  selectedCity=null;
+  $('#cityGrid').innerHTML=indiaCities.map((c,i)=>`
+    <div class="city-card" data-city="${i}" role="button" tabindex="0">
+      <div class="city-state-label">${c.state}</div>
+      <div class="city-name">${c.city}</div>
+      <div class="city-slots">${c.slots.toLocaleString()} CAPACITY</div>
+      <div class="city-status ${c.status==='active'?'':'soon'}">${c.status==='active'?'ACTIVE':'COMING SOON'}</div>
+    </div>
+  `).join('');
+
+  $$('.city-card').forEach(b=>b.onclick=()=>{
+    playCitySelect();
+    $$('.city-card').forEach(x=>x.classList.remove('selected-city'));
+    b.classList.add('selected-city');
+    selectedCity=indiaCities[+b.dataset.city];
+    // Flash detail and scroll
+    setTimeout(()=>$('#eventDetail').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    renderDetail();
+  });
+}
+
+// Detail
+function renderDetail(){
+  const city=selectedCity;
+  $('#eventDetail').innerHTML=`
+    <div class="detail-card">
+      <div class="detail-inner">
+        <div class="detail-main">
+          <div class="detail-kicker">CYCLE ${String(selected.id).padStart(2,'0')} · ${selected.month}${city?' · '+city.city.toUpperCase():''}</div>
+          <div class="detail-title">${selected.name}</div>
+          <div class="detail-bpm">◉ ${selected.min}–${selected.max} BPM</div>
+          <div class="detail-desc">The tempo arc rises across three acts, preserving room for arrival, peak-time pressure and the closing community ritual.${city?` <span style="color:var(--cyan)">${city.city} · ${city.state}</span> — ${city.slots.toLocaleString()} capacity.`:''}</div>
+          <div class="acts">
+            <div class="act"><i>01 PRE</i><p>Arrivals, vegetarian lunch and first beer coupons.</p></div>
+            <div class="act"><i>02 PARTY</i><p>Main production from 11:11 AM to 11:11 PM.</p></div>
+            <div class="act"><i>03 AFTER</i><p>Wind-down, repeat guests and community.</p></div>
+          </div>
+        </div>
+        <div class="detail-price">
+          <div class="price-amount">₹10,001</div>
+          <div class="price-info">One individual · All 3 days<br>Food, entry &amp; music production included<br>Stay arranged separately with venue<br>Ages 21+</div>
+          <button class="btn-console yellow" onclick="openBuy()">${city?`BOOK ${city.city.toUpperCase()}`:'BUY CYCLE '+String(selected.id).padStart(2,'0')}</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function showView(id){
+  playNav();
+  $$('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  $$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  if(id==='account')renderAccount();
+  scrollTo(0,0);
+}
+
+$$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+$$('[data-jump-organizers]').forEach(b=>b.onclick=()=>showView('organizers'));
+
+// ─── BUY FLOW ───
+function openBuy(){playModal();buyStep=1;$('#buyModal').classList.add('open');renderBuy()}
+
+function renderBuy(){
+  const c=$('#buyContent');
+  const steps=$$('#buyModal .step');
+  steps.forEach((s,i)=>s.classList.toggle('on',i<buyStep));
+
+  if(buyStep===1){
+    c.innerHTML=`
+      <span class="kicker">CYCLE ${String(selected.id).padStart(2,'0')}${selectedCity?' · '+selectedCity.city.toUpperCase():''}</span>
+      <h2>INDIVIDUAL TICKET.</h2>
+      <div class="ticket-preview">
+        <strong>${selected.month} · ${selected.name}</strong>
+        <div class="ticket-meta">
+          <div><small>DATES</small>${selected.pre} · ${selected.party} · ${selected.after}</div>
+          <div><small>BPM</small>${selected.min}–${selected.max}</div>
+          <div><small>VENUE</small>${selectedCity?selectedCity.city:'Select a city'}</div>
+          <div><small>PACKAGE</small>3 DAYS · 21+</div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:16px">
+        <label>Individual tickets (maximum 4)</label>
+        <select id="qty">${[1,2,3,4].map(n=>`<option>${n}</option>`).join('')}</select>
+      </div>
+      <div class="notice">No couple, family or group products. Each ticket is assigned to one attendee. This offline demo simulates payment.</div>
+      <button class="btn-console yellow" id="continueBuy">CONTINUE · ₹10,001</button>`;
+  } else if(buyStep===2){
+    c.innerHTML=`
+      <span class="kicker">BUYER DETAILS</span>
+      <h2>${state.profile?'CONFIRM YOUR BOOKING.':'SIGN IN TO CONTINUE.'}</h2>
+      ${state.profile?`
+        <p style="font-size:14px;color:var(--dim);margin-bottom:16px">Booking as <b style="color:var(--white)">${esc(state.profile.name)}</b> · <span style="color:var(--cyan)">${esc(state.profile.contact)}</span></p>
+        <div class="field" style="margin-bottom:16px">
+          <label>Attendee name</label>
+          <input id="attendee" maxlength="80" value="${esc(state.profile.name)}">
+        </div>
+        <div class="notice">By continuing, you confirm every attendee is 21+ and accepts venue entry rules.</div>
+        <button class="btn-console yellow" id="payBuy">SIMULATE PAYMENT</button>
+      `:`
+        <p class="empty">Verify your phone number or email address with the demo OTP first.</p>
+        <button class="btn-console" id="signinBuy" style="margin-top:16px">SIGN IN WITH OTP</button>
+      `}`;
+  } else {
+    const t=state.tickets[0];
+    playSuccess();
+    c.innerHTML=`
+      <span class="kicker">PAYMENT SIMULATED · BOOKING CONFIRMED</span>
+      <h2>YOU'RE ON THE LIST.</h2>
+      <div class="ticket-preview">
+        <strong>${t.month} · ${t.name}</strong>
+        <div class="ticket-meta">
+          <div><small>TICKET ID</small>${t.code}</div>
+          <div><small>ATTENDEE</small>${esc(t.attendee)}</div>
+          <div><small>DATES</small>${t.dates}</div>
+          <div><small>BPM</small>${t.bpm}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn-console yellow" id="downloadTicket">DOWNLOAD TICKET</button>
+        <button class="btn-console" data-close>DONE</button>
+      </div>`;
+  }
+
+  if($('#continueBuy'))$('#continueBuy').onclick=()=>{playSelect();buyStep=2;renderBuy()};
+  if($('#signinBuy'))$('#signinBuy').onclick=()=>{pendingAuth=()=>renderBuy();openAuth()};
+  if($('#payBuy'))$('#payBuy').onclick=()=>{
+    const name=$('#attendee').value.trim();
+    if(name.length<2)return toast('Enter the attendee name','error');
+    playBuy();
+    const code='TN'+String(selected.id).padStart(2,'0')+'-'+Date.now().toString().slice(-6);
+    state.tickets.unshift({
+      code,attendee:name,month:selected.month,name:selected.name,
+      city:selectedCity?.city||'TBD',
+      dates:`${selected.pre} · ${selected.party} · ${selected.after}`,
+      bpm:`${selected.min}–${selected.max}`,created:new Date().toLocaleDateString()
+    });
+    save();buyStep=3;renderBuy();
+  };
+  if($('#downloadTicket'))$('#downloadTicket').onclick=()=>downloadTicket(state.tickets[0]);
+  $$('[data-close]').forEach(b=>b.onclick=closeModals);
+}
+
+function downloadTicket(t){
+  const text=`TRIPNOTEC\nTECHNO LOVES YOU\n\n${t.month} · ${t.name}\nTicket: ${t.code}\nAttendee: ${t.attendee}\nCity: ${t.city||'TBD'}\nDates: ${t.dates}\nBPM: ${t.bpm}\nTime: 11:11 AM – 11:11 PM\n\nIndividual 3-day package · 21+\nStay not included.`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'}));
+  a.download=`TRIPNOTEC-${t.code}.txt`;a.click();URL.revokeObjectURL(a.href);
+  playSuccess();
+}
+
+// ─── AUTH ───
+function openAuth(){playModal();$('#authModal').classList.add('open');renderAuth(1)}
+
+function renderAuth(step,contact,type){
+  const c=$('#authContent');
+  if(step===1){
+    c.innerHTML=`
+      <span class="kicker">TRIPNOTEC ACCESS</span>
+      <h2>VERIFY YOUR IDENTITY.</h2>
+      <p style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6">Use a phone number or email address. This standalone demo does not send a real message.</p>
+      <div class="field" style="margin-bottom:12px">
+        <label>Name</label><input id="authName" maxlength="80" value="${esc(state.profile?.name||'')}">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Sign-in method</label>
+        <select id="authType"><option value="phone">Phone number</option><option value="email">Email address</option></select>
+      </div>
+      <div class="field" style="margin-bottom:20px">
+        <label>Phone or email</label>
+        <input id="authContact" maxlength="120" placeholder="+91 98765 43210">
+      </div>
+      <button class="btn-console yellow" id="sendOtp">GENERATE DEMO OTP</button>`;
+  } else {
+    c.innerHTML=`
+      <span class="kicker">DEMO VERIFICATION</span>
+      <h2>ENTER THE CODE.</h2>
+      <p style="font-size:13px;color:var(--dim);margin-bottom:8px">Use this on-screen code to emulate ${type==='phone'?'SMS':'email'} verification for ${esc(contact)}.</p>
+      <div class="otp-display">111111</div>
+      <div class="field" style="margin-bottom:20px">
+        <label>6-digit OTP</label>
+        <input id="otpInput" inputmode="numeric" maxlength="6" placeholder="111111">
+      </div>
+      <button class="btn-console" id="verifyOtp">VERIFY &amp; CONTINUE</button>`;
+  }
+
+  if($('#sendOtp'))$('#sendOtp').onclick=()=>{
+    const name=$('#authName').value.trim();
+    const type=$('#authType').value;
+    const contact=$('#authContact').value.trim();
+    const valid=type==='email'?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact):/^\+?[0-9 ()-]{8,18}$/.test(contact);
+    if(name.length<2)return toast('Enter your name','error');
+    if(!valid)return toast(`Enter a valid ${type}`,'error');
+    sessionStorage.setItem('tn_auth',JSON.stringify({name,type,contact}));
+    playSelect();
+    renderAuth(2,contact,type);
+  };
+  if($('#verifyOtp'))$('#verifyOtp').onclick=()=>{
+    if($('#otpInput').value!=='111111')return toast('Use the demo code 111111','error');
+    state.profile=JSON.parse(sessionStorage.getItem('tn_auth'));
+    save();$('#authModal').classList.remove('open');
+    toast('Identity verified','success');
+    updateHeroName();
+    renderAccount();
+    if(pendingAuth){const cb=pendingAuth;pendingAuth=null;cb()}
+  };
+  $$('[data-close]').forEach(b=>b.onclick=closeModals);
+}
+
+// ─── CATEGORIES ───
+const specific={
+  space:[['capacity','Maximum legal capacity','number','Minimum 1000'],['city','Venue city','text','City'],['venue','Venue / property name','text','Name'],['indoor','Space format','select','Indoor|Outdoor|Hybrid'],['proof','Licences & safety readiness','textarea','Describe fire, excise, sound and operating permissions']],
+  dj:[['style','Techno style / subgenres','text','Hypnotic, peak-time, industrial…'],['bpm','Performance BPM range','text','e.g. 128–145 BPM'],['links','Set / profile links','textarea','SoundCloud, Mixcloud, Instagram or website'],['format','Performance format','select','DJ set|Live set|Hybrid set']],
+  production:[['scope','Production capability','select','Stage|Sound / PA|Lighting|Lasers|LED / Visuals|Power|Full stack'],['inventory','Key equipment & crew','textarea','Inventory, certifications and crew strength']],
+  vendor:[['offering','Product / activation','textarea','What will your counter offer?'],['footprint','Counter footprint & power','text','Space and electrical needs']],
+  creative:[['discipline','Creative discipline','select','Photography|Film|Drone|VJ / Visuals|Motion design|Art direction|Other'],['portfolio','Portfolio link','text','https://'],['gear','Equipment & permissions','textarea','Gear, licences, operator certifications']],
+  corporate:[['company','Company / brand','text','Organisation'],['function','Function represented','select','F&B|Alcohol / Beverage|Hospitality|Consumer brand|Media|Other'],['mandate','Partnership mandate','textarea','What can you activate or supply?']],
+  security:[['licence','Licence / certification','text','Registration details'],['strength','Deployable team strength','number','Number of personnel'],['experience','Large-format event experience','textarea','Relevant deployments']],
+  hospitality:[['service','Service area','select','Vegetarian catering|Bar operations|Accommodation|Guest relations|Housekeeping'],['capacity','Service capacity per day','number','Guests per day']],
+  compliance:[['speciality','Speciality','select','Event licence|Insurance|Legal|Fire & safety|Excise|Municipal approvals'],['jurisdiction','Jurisdictions covered','text','Cities / states']],
+  logistics:[['fleet','Fleet / logistics capability','textarea','Vehicles, freight and staffing'],['coverage','Coverage area','text','Cities / states']],
+  sponsor:[['brand','Brand / media property','text','Name'],['interest','Partnership interest','select','Title partner|Category partner|Media partner|Community partner|In-kind partner'],['proposal','Proposed value exchange','textarea','Audience, inventory and contribution']],
+  other:[['capability','Your capability','textarea','Tell us exactly what you can contribute']]
+};
+
+function renderCategories(){
+  $('#categoryGrid').innerHTML=categories.map(c=>`
+    <button type="button" class="cat-btn ${c[0]===selectedCat?'active':''}" data-cat="${c[0]}">
+      <b>${c[1]}</b><small>${c[2]}</small>
+    </button>`).join('');
+  $$('.cat-btn').forEach(b=>b.onclick=()=>{
+    playClick();
+    selectedCat=b.dataset.cat;renderCategories();renderOrgForm();
+  });
+}
+
+function renderOrgForm(){
+  const cat=categories.find(c=>c[0]===selectedCat);
+  const fields=[
+    ['name','Full name / lead contact','text','Your name'],
+    ['email','Business email','email','name@company.com'],
+    ['phone','Phone number','tel','+91'],
+    ['org','Organisation / stage name','text','Name'],
+    ...(specific[selectedCat]||[])
+  ];
+  $('#organizerFields').innerHTML=
+    `<div class="field full"><span class="kicker">${cat[1]} APPLICATION</span><h2 style="font-family:var(--display);font-size:42px;letter-spacing:2px;margin:6px 0 12px">TELL US WHAT YOU OPERATE.</h2></div>`+
+    fields.map(f=>`<div class="field ${f[2]==='textarea'?'full':''}">
+      <label for="f_${f[0]}">${f[1]}</label>
+      ${f[2]==='select'
+        ?`<select id="f_${f[0]}" name="${f[0]}">${f[3].split('|').map(o=>`<option>${o}</option>`).join('')}</select>`
+        :f[2]==='textarea'
+        ?`<textarea id="f_${f[0]}" name="${f[0]}" maxlength="1000" placeholder="${f[3]}"></textarea>`
+        :`<input id="f_${f[0]}" name="${f[0]}" type="${f[2]}" maxlength="200" placeholder="${f[3]}">`}
+    </div>`).join('')+
+    (selectedCat==='space'?`<label class="check field full"><input type="checkbox" id="capacityAgree"><span>I confirm this space has a legal operating capacity of at least 1000 guests and can provide supporting documentation.</span></label>`:'')+
+    `<label class="check field full"><input type="checkbox" id="consent"><span>I consent to TRIPNOTEC storing these details in this browser for this demo and contacting me about relevant cycles.</span></label>
+     <div class="field full"><button class="btn-console magenta" type="submit">SUBMIT PARTNER APPLICATION</button></div>`;
+}
+
+$('#organizerForm').onsubmit=e=>{
+  e.preventDefault();
+  const fd=new FormData(e.currentTarget);
+  const name=String(fd.get('name')||'').trim();
+  const email=String(fd.get('email')||'').trim();
+  const phone=String(fd.get('phone')||'').trim();
+  if(name.length<2||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||phone.length<8)return toast('Complete valid contact details','error');
+  if(selectedCat==='space'&&(!$('#capacityAgree').checked||Number(fd.get('capacity'))<1000))return toast('Space capacity must be at least 1000','error');
+  if(!$('#consent').checked)return toast('Consent is required','error');
+  playSubmit();
+  state.applications.unshift({id:'APP-'+Date.now().toString().slice(-6),category:categories.find(c=>c[0]===selectedCat)[1],name,email,created:new Date().toLocaleDateString()});
+  save();
+  e.currentTarget.innerHTML=`
+    <div style="padding:24px 0">
+      <span class="kicker" style="color:var(--magenta)">APPLICATION RECEIVED</span>
+      <h2 style="font-family:var(--display);font-size:52px;letter-spacing:2px;margin:8px 0 12px">YOU'RE IN THE NETWORK.</h2>
+      <p style="color:var(--dim);font-size:14px;line-height:1.7">Reference <b style="color:var(--white)">${state.applications[0].id}</b>. Your details are saved in this browser.</p>
+    </div>
+    <button class="btn-console" type="button" id="anotherApp">SUBMIT ANOTHER</button>`;
+  $('#anotherApp').onclick=renderOrgForm;
+  toast('Partner application saved','success');
+};
+
+// ─── ACCOUNT ───
+function renderAccount(){
+  updateHeroName();
+  if(state.profile){
+    $('#accountTitle').textContent=`HELLO, ${state.profile.name.split(' ')[0].toUpperCase()}.`;
+    $('#accountAuth').textContent='SIGN OUT';
+    $('#accountAuth').onclick=()=>{playClick();state.profile=null;save();updateHeroName();renderAccount();toast('Signed out')};
+  } else {
+    $('#accountTitle').textContent='ACCOUNT.';
+    $('#accountAuth').textContent='SIGN IN';
+    $('#accountAuth').onclick=openAuth;
+  }
+  $('#ticketHistory').innerHTML=state.tickets.length
+    ?state.tickets.map(t=>`<div class="record"><b>${t.month} · ${t.name}${t.city?' · '+t.city:''}</b><small>${t.code} · ${t.dates} · ${t.bpm}</small></div>`).join('')
+    :`<div class="empty">NO TICKETS BOOKED ON THIS DEVICE.</div>`;
+  $('#applicationHistory').innerHTML=state.applications.length
+    ?state.applications.map(a=>`<div class="record"><b>${esc(a.category)}</b><small>${a.id} · ${a.created}</small></div>`).join('')
+    :`<div class="empty">NO APPLICATIONS ON THIS DEVICE.</div>`;
+}
+
+function closeModals(){playClose();$$('.modal').forEach(m=>m.classList.remove('open'))}
+$$('[data-close]').forEach(b=>b.onclick=closeModals);
+$$('.modal').forEach(m=>m.onclick=e=>{if(e.target===m)closeModals()});
+
+// ─── NAV HOOKS ───
+$('#heroBuy').onclick=()=>{playClick();$('#calendar').scrollIntoView({behavior:'smooth'})};
+$('#topBuy').onclick=openBuy;
+$('#accountAuth').onclick=openAuth;
+document.getElementById('navHome').onclick=()=>{playNav();showView('events');scrollTo(0,0)};
+
+// ─── MOBILE MENU ───
+const mobileMenu=$('#mobileMenu'),mobileMenuToggle=$('#mobileMenuToggle');
+function closeMobileMenu(){mobileMenu.classList.remove('open');mobileMenuToggle.setAttribute('aria-expanded','false')}
+mobileMenuToggle.onclick=()=>{playClick();const open=mobileMenu.classList.toggle('open');mobileMenuToggle.setAttribute('aria-expanded',String(open))};
+$('#mobileHome').onclick=()=>{showView('events');closeMobileMenu()};
+$('#mobileBuy').onclick=()=>{closeMobileMenu();openBuy()};
+mobileMenu.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>{closeMobileMenu()}));
+document.addEventListener('click',ev=>{if(mobileMenu.classList.contains('open')&&!mobileMenu.contains(ev.target)&&!mobileMenuToggle.contains(ev.target))closeMobileMenu()});
+window.addEventListener('resize',()=>{if(innerWidth>900)closeMobileMenu()});
+
+// ─── CTRL BUTTON SOUNDS ───
+$$('.ctrl-btn').forEach(b=>{
+  const color=b.classList[1];
+  b.onclick=()=>{playCtrlBtn(color||'g');b.classList.add('active');setTimeout(()=>b.classList.remove('active'),300)};
+});
+
+// ─── KNOB INTERACTION ───
+let knobAngle={bpmKnob:0,volKnob:0};
+$$('.knob').forEach(k=>{
+  let dragging=false,startY=0,startAngle=0;
+  k.onmousedown=k.ontouchstart=(e)=>{
+    dragging=true;startY=e.touches?e.touches[0].clientY:e.clientY;
+    startAngle=knobAngle[k.id]||0;e.preventDefault();
+  };
+  document.onmousemove=document.ontouchmove=(e)=>{
+    if(!dragging)return;
+    const y=e.touches?e.touches[0].clientY:e.clientY;
+    const delta=(startY-y)*2;
+    knobAngle[k.id]=Math.max(-135,Math.min(135,startAngle+delta));
+    k.style.transform=`rotate(${knobAngle[k.id]}deg)`;
+    playKnob();
+  };
+  document.onmouseup=document.ontouchend=()=>{dragging=false};
+});
+
+// ─── GLOBAL HOVER SOUNDS for buttons ───
+document.addEventListener('mouseover',e=>{
+  if(e.target.matches('.btn-console,.ctrl-btn,.cat-btn,.city-card,.month-card')){playHover()}
+});
+
+// ─── INIT ───
+renderCalendar();
+renderBpmBar(events[0].min,events[0].max);
+renderCityConsole(); // show cities for default selected month
+renderDetail();
+renderCategories();
+renderOrgForm();
+renderAccount();
+updateHeroName();
+</script>
+</body>
+</html>
